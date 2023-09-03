@@ -58,10 +58,12 @@
                         <small
                             x-text="$store.todos.getTodos(true).length + '/' +$store.todos.getTodos().length"></small>
                     </H1>
-                    <button @click="$store.todos.removeCategory($store.todos.categories.find(c => c.selected).id)"
-                        class="h-fit text-red-700 hover:text-red-700/50 rounded-full">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
+                    <template x-if="!!$store.todos.categories.find(c => c.selected)">
+                        <button @click="$store.todos.removeCategory($store.todos.categories.find(c => c.selected).id)"
+                            class="h-fit text-red-700 hover:text-red-700/50 rounded-full">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </template>
                 </div>
                 <div class="p-2 space-y-2">
                     <template x-for="todo in $store.todos.getTodos()">
@@ -81,8 +83,8 @@
                     </template>
                 </div>
                 <div class="p-2">
-                    <ins class="adsbygoogle block" data-ad-client="ca-pub-4072872283229118"
-                        data-ad-slot="9254214153" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <ins class="adsbygoogle block" data-ad-client="ca-pub-4072872283229118" data-ad-slot="9254214153"
+                        data-ad-format="auto" data-full-width-responsive="true"></ins>
                     <script>
                         (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
