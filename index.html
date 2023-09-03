@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./logo.png">
+    <title>Todo</title>
+    <meta name="description" content="A basic todolist made with TailwindCSS and AlpineJS by @RomainNeup">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4072872283229118"
+        crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-light dark:bg-dark text-dark dark:text-light">
+    <div class="flex">
+        <div
+            class="max-w-sm w-fit md:w-64 shrink-0 bg-dark/10 dark:bg-light/10 flex flex-col justify-start p-4 space-y-4 h-screen">
+            <div class="flex justify-center md:justify-between items-center" x-data>
+                <img src="./logo.png" class="h-8 animate-spin hidden md:block" />
+                <button @click="$store.darkMode.toggle()" class="h-fit">
+                    <span class="material-symbols-outlined" x-text="$store.darkMode.on ? 'light_mode' : 'dark_mode'">
+                        light_mode
+                    </span>
+                </button>
+            </div>
+            <div x-data="{newCategory: ''}" class="space-y-2">
+                <h1 class="text-2xl font-bold hidden md:block">Categories</h1>
+                <button
+                    class="rounded-lg p-2 w-fit md:w-full text-left bg-secondary text-dark hover:bg-primary flex items-center space-x-2"
+                    @click="$store.todos.selectCategory('')"
+                    :class="!$store.todos.categories.find(c => c.selected) && '!bg-primary'">
+                    <span class="material-symbols-outlined text-light"
+                        x-text="!$store.todos.categories.find(c => c.selected) ? 'check_circle' : 'circle'">circle</span>
+                    <span class="hidden md:block">All</span>
+                </button>
+                <template x-for="(category, index) in $store.todos.categories">
+                    <button
+                        class="rounded-lg p-2 w-fit md:w-full text-left bg-secondary text-dark hover:bg-primary flex items-center md:space-x-2"
+                        @click="$store.todos.selectCategory(category.name)" :class="category.selected && '!bg-primary'">
+                        <span class="material-symbols-outlined" :class="category.color"
+                            x-text="category.selected ? 'check_circle' : 'circle'">circle</span>
+                        <span x-text="category.name" class="hidden md:block"></span>
+                    </button>
+                </template>
+                <input type="text" placeholder="Add a category"
+                    class="rounded-lg p-2 w-full text-left bg-secondary text-dark flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-dark/50 hidden md:block"
+                    x-model="newCategory" @keyup.enter="$store.todos.addCategory(newCategory); newCategory = ''" />
+            </div>
+        </div>
+        <div class="flex flex-col justify-between p-8 space-y-4 w-full" x-data="{newTodo: ''}">
+            <div class="h-full overflow-y-auto">
+                <div class="flex justify-between items-center">
+                    <H1 class="text-4xl font-bold mb-2">
+                        Todo
+                        <small
+                            x-text="$store.todos.getTodos(true).length + '/' +$store.todos.getTodos().length"></small>
+                    </H1>
+                    <button @click="$store.todos.removeCategory($store.todos.categories.find(c => c.selected).id)"
+                        class="h-fit text-red-700 hover:text-red-700/50 rounded-full">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+                <div class="p-2 space-y-2">
+                    <template x-for="todo in $store.todos.getTodos()">
+                        <div class="flex items-center justify-between">
+                            <div class="flex space-x-2 items-center">
+                                <span class="material-symbols-outlined cursor-pointer hover:bg-dark/10 rounded-full"
+                                    @click="$store.todos.toggleDone(todo.id)"
+                                    :class="$store.todos.categories.find(c => c.name === todo.category).color"
+                                    x-text="todo.done ? 'check_circle' : 'circle'">circle</span>
+                                <span x-text="todo.title" :class="todo.done && 'line-through'"></span>
+                            </div>
+                            <button @click="$store.todos.removeTodo(todo.id)"
+                                class="h-fit text-red-700 hover:text-red-700/50 rounded-full">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+                <div class="p-2">
+                    <ins class="adsbygoogle block" data-ad-client="ca-pub-4072872283229118"
+                        data-ad-slot="9254214153" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+            <input type="text" placeholder="Add a todo"
+                class="rounded-lg p-2 w-full text-left bg-secondary text-dark flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-dark/50"
+                x-model="newTodo" @keyup.enter="$store.todos.addTodo(newTodo); newTodo = ''"
+                x-show="!!$store.todos.categories.find(c => c.selected)" />
+        </div>
+    </div>
+</body>
+<footer>
+    <script src="alpine.js"></script>
+</footer>
